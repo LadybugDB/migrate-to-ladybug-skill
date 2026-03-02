@@ -54,4 +54,4 @@ DETACH ts;
 - Use `LOAD_DYNAMIC_EXTENSION duckdb` before attaching
 - The `skip_unsupported_table = true` option ignores unsupported DuckDB table types
 - Query external tables using the alias prefix (e.g., `ts.person`)
-- Relationship pushdown is supported for DuckDB tables
+- Cypher to SQL pushdown is supported for DuckDB tables
