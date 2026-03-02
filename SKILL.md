@@ -8,7 +8,7 @@ LadybugDB is the continuation of Kuzu. The migration involves updating package i
 |----------|-------------|-------------|
 | Python | `kuzu` | `real_ladybug` |
 | Node.js | `kuzu` | `@ladbugdb/core` |
-| Go | `github.com/kuzudb/go-kuzu` | `github.com/lbugdb/go-ladybug` |
+| Go | `github.com/kuzudb/go-kuzu` | `github.com/LadybugDB/go-ladybug` |
 | Rust | `kuzu` | `lbug` |
 
 ## Python Migration
