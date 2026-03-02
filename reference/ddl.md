@@ -58,7 +58,7 @@ WITH (storage = '/path/to/icebug-disk/');
 
 - The `WITH (storage = '...')` clause connects the table to external Parquet files
 - No data is copied into Ladybug - queries run directly against the Parquet files
-- Works with Iceberg/Icebug format datasets that have proper metadata
+- Works with Icebug format datasets that have proper metadata
 - Useful for large datasets where importing would be impractical
 
 ## Query Arrow Memory
