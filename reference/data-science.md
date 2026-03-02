@@ -108,6 +108,5 @@ df = conn.execute("MATCH (n) RETURN n.name, n.age").get_as_df()
 
 ## Migration Notes
 
-- Replace NetworkX export patterns with native `algo` extension calls
-- Move UDF logic to Cypher macros or Python UDFs
-- Leverage Icebug-native storage for large-scale graph analytics
+- Replace NetworkX export patterns with arrow and icebug algorithms
+- Leverage Icebug-format (disk and memory) for large-scale graph analytics
