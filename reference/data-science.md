@@ -29,7 +29,7 @@ CREATE MACRO my_udf(x, y) AS x + y;
 
 ## Ladybug (Preferred)
 
-Ladybug prefers native integration with Icebug/Iceberg for data science workflows.
+Ladybug prefers native integration with Icebug for data science workflows.
 
 ### Icebug
 
