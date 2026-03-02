@@ -33,7 +33,7 @@ Ladybug prefers native integration with Icebug/Iceberg for data science workflow
 
 ### Icebug
 
-[Icebug](https://github.com/LadybugDB/icebug) is a fork of [networkit](https://networkit.github.io/) with emphasis on Apache Arrow. It is much more efficient to construct and run algorithms compared to NetworkX:
+[Icebug](https://github.com/Ladybug-Memory/icebug) is a fork of [networkit](https://networkit.github.io/) with emphasis on Apache Arrow. It is much more efficient to construct and run algorithms compared to NetworkX:
 
 - Arrow-native memory layout for efficient data transfer
 - Faster algorithm execution on large graphs
@@ -52,17 +52,17 @@ Icebug inherits 100+ algorithms from networkit:
 | **Link Prediction** (~10) | Jaccard, Adamic-Adar, Common Neighbors |
 
 ```python
-import icebug as ib
+import networkit as nk
 
 # Create graph from Arrow data
-G = ib.Graph.from_arrow(node_table, edge_table)
+G = nk.Graph.fromCSR(...)
 
 # Run algorithms efficiently
-pagerank = ib.pagerank(G)
-communities = ib.louvain(G)
+pagerank = nk.pagerank(G)
+communities = nk.louvain(G)
 ```
 
-### Native Graph Algorithms
+### Native Graph Algorithms (legacy)
 
 Use the `algo` extension for in-database graph algorithms:
 
