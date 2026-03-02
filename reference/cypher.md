@@ -32,7 +32,7 @@ CREATE (u)-[:BOUGHT {qty: 2}]->(p);
 Without `ANY`, you must define the schema first:
 
 ```cypher
-CREATE GRAPH my_graph STRICT;
+CREATE GRAPH my_graph;
 USE my_graph;
 CREATE NODE TABLE User (name STRING, PRIMARY KEY(name));
 CREATE NODE TABLE Product (id INT64, price DOUBLE, PRIMARY KEY(id));
