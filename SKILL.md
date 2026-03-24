@@ -1,3 +1,10 @@
+---
+name: migrate-to-ladybug-skill
+description: >
+  Use this skill when migrating code or configuration to LadybugDB from Kuzu
+  Can also be used to migrate from other cypher using systems such as neo4j
+---
+
 # Migrate from Kuzu to LadybugDB
 
 LadybugDB is the continuation of Kuzu. The migration involves updating package imports and connection code.
