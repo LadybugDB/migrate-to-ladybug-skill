@@ -13,7 +13,7 @@ LadybugDB is the continuation of Kuzu. The migration involves updating package i
 
 | Language | Old Package | New Package |
 |----------|-------------|-------------|
-| Python | `kuzu` | `real_ladybug` |
+| Python | `kuzu` | `ladybug` |
 | Node.js | `kuzu` | `@ladybugdb/core` |
 | Go | `github.com/kuzudb/go-kuzu` | `github.com/LadybugDB/go-ladybug` |
 | Rust | `kuzu` | `lbug` |
@@ -27,7 +27,7 @@ LadybugDB is the continuation of Kuzu. The migration involves updating package i
 pip install kuzu
 
 # New
-pip install real_ladybug
+pip install ladybug
 ```
 
 ### Code Changes
@@ -43,7 +43,7 @@ result = conn.execute("MATCH (n) RETURN n LIMIT 5")
 
 ```python
 # New (ladybug)
-import real_ladybug as lb
+import ladybug as lb
 
 db = lb.Database("myDB")
 conn = lb.Connection(db)

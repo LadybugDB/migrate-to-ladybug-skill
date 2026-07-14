@@ -65,7 +65,7 @@ WITH (storage='arrow://my_arrow_table_id');
 In Python, you register Arrow memory and get the ID:
 
 ```python
-import real_ladybug as lb
+import ladybug as lb
 import pyarrow as pa
 
 db = lb.Database(":memory:")

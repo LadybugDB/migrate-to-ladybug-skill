@@ -70,7 +70,7 @@ Query Arrow memory directly by registering it with the database and using the `a
 Use the `create_arrow_table()` helper function:
 
 ```python
-import real_ladybug as lb
+import ladybug as lb
 import pyarrow as pa
 
 db = lb.Database(":memory:")

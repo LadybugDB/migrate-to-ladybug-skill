@@ -97,7 +97,7 @@ CALL algo.shortest_path('start_node', 'end_node');
 ### Python Integration
 
 ```python
-import real_ladybug as lb
+import ladybug as lb
 
 db = lb.Database(":memory:")
 conn = lb.Connection(db)
