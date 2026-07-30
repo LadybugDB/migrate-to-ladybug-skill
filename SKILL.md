@@ -173,11 +173,11 @@ load pg_client;
 
 -- Libpq connection string
 ATTACH 'host=localhost port=5432 dbname=mydb user=user password=pass' AS pg
-    (dbtype postgres);
+    (dbtype pg_client);
 
 -- URL format (also accepted)
 ATTACH 'postgresql://user:pass@localhost:5432/mydb' AS pg
-    (dbtype postgres);
+    (dbtype pg_client);
 ```
 
 ### Detach
