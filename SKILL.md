@@ -22,9 +22,6 @@ lbug my_database.lbdb
 
 # Start with an in-memory database (data lost on exit)
 lbug :memory:
-
-# Start with a remote LadybugDB API server
-lbug http://localhost:8123
 ```
 
 ## Shell Meta-Commands
@@ -134,7 +131,6 @@ MATCH (p:Person) RETURN p.name, p.age;
 |------|-------------|
 | `:memory:` | Run against an in-memory database |
 | `<path>` | Open or create a persistent database at the given path |
-| `http://host:port` | Connect to a remote LadybugDB API server |
 
 ---
 
@@ -145,7 +141,8 @@ LadybugDB can attach external databases as foreign tables and query them with st
 ### DuckDB
 
 ```cypher
-LOAD_DYNAMIC_EXTENSION duckdb;
+install duckdb;
+load duckdb;
 
 ATTACH '/path/to/database.db' AS ts
     (dbtype duckdb, skip_unsupported_table = true);
@@ -166,10 +163,13 @@ CREATE REL TABLE knows_rel (FROM ts.person TO ts.person)
 MATCH (a:ts.person)-[b:knows_rel]->(c:ts.person) RETURN count(*);
 ```
 
-### PostgreSQL
+### PostgreSQL (v0.19.0+)
+
+Use the native `pg_client` extension (preferred over the DuckDB-based postgres extension):
 
 ```cypher
-LOAD_DYNAMIC_EXTENSION postgres;
+install pg_client;
+load pg_client;
 
 ATTACH '' AS pg
     (dbtype postgres,

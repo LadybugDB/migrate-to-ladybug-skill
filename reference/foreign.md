@@ -5,7 +5,8 @@ LadybugDB supports attaching external DuckDB databases for querying nodes and re
 ## Attach DuckDB Database
 
 ```cypher
-LOAD_DYNAMIC_EXTENSION duckdb;
+install duckdb;
+load duckdb;
 
 ATTACH '${LBUG_ROOT_DIRECTORY}/dataset/databases/duckdb_database/tinysnb.db' AS ts 
     (dbtype duckdb, skip_unsupported_table = true);
@@ -51,7 +52,7 @@ DETACH ts;
 
 ## Notes
 
-- Use `LOAD_DYNAMIC_EXTENSION duckdb` before attaching
+- Use `install duckdb; load duckdb;` before attaching
 - The `skip_unsupported_table = true` option ignores unsupported DuckDB table types
 - Query external tables using the alias prefix (e.g., `ts.person`)
 - Cypher to SQL pushdown is supported for DuckDB tables
