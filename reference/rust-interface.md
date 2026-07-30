@@ -98,7 +98,7 @@ let conn = Connection::new(&db)?;
 
 ## Further Reading
 
-- [LadybugQL Shell](../SKILL.md) — shell meta-commands and attach operations
+- [lbug Shell](../SKILL.md) — shell meta-commands and attach operations
 - [Python Interface](python-interface.md)
 - [JavaScript Interface](javascript-interface.md)
 - [Cypher Reference](cypher.md)

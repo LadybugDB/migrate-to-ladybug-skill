@@ -76,7 +76,7 @@ const conn = new Connection(db);
 
 ## Further Reading
 
-- [LadybugQL Shell](../SKILL.md) — shell meta-commands and attach operations
+- [lbug Shell](../SKILL.md) — shell meta-commands and attach operations
 - [Python Interface](python-interface.md)
 - [Rust Interface](rust-interface.md)
 - [Cypher Reference](cypher.md)

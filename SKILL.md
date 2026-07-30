@@ -4,9 +4,9 @@ description: >
   Use this skill when writing code to talk to LadybugDB
 ---
 
-# LadybugDB Shell (LadybugQL)
+# LadybugDB Shell
 
-LadybugDB is a high-performance embedded graph database with a Cypher-compatible query language called LadybugQL. This doc covers the interactive **ladybug shell** (CLI).
+LadybugDB is a high-performance embedded graph database that speaks the ladybug dialect of Cypher. This doc covers the interactive **lbug shell** (CLI).
 
 For language-specific interfaces, see:
 - [Python Interface](reference/python-interface.md)
@@ -117,7 +117,7 @@ Output:
 
 ## Running Queries
 
-Enter any LadybugQL statement directly:
+Enter any Cypher statement directly:
 
 ```cypher
 CREATE NODE TABLE Person (id INT64, name STRING, age INT64, PRIMARY KEY (id));
@@ -136,7 +136,7 @@ MATCH (p:Person) RETURN p.name, p.age;
 
 ## Attaching Foreign Tables
 
-LadybugDB can attach external databases as foreign tables and query them with standard LadybugQL.
+LadybugDB can attach external databases as foreign tables and query them with standard Cypher.
 
 ### DuckDB
 
@@ -217,7 +217,7 @@ DETACH other;
 
 ## Further Reading
 
-- [Cypher Query Reference](reference/cypher.md) — LadybugQL extensions for JSON, open-type graphs, Parquet on disk, Arrow memory
+- [Cypher Query Reference](reference/cypher.md) — Cypher extensions for JSON, open-type graphs, Parquet on disk, Arrow memory
 - [DDL Reference](reference/ddl.md) — Icebug/Iceberg format Parquet, table creation with storage options
 - [Foreign Data Wrappers](reference/foreign.md) — DuckDB and other foreign database attachment details
 - [Data Science](reference/data-science.md) — Icebug (networkit fork), Arrow-native graph algorithms
