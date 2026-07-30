@@ -1,89 +1,224 @@
 ---
-name: migrate-to-ladybug-skill
+name: ladybug-skill
 description: >
-  Use this skill when migrating code or configuration to LadybugDB from Kuzu
-  Can also be used to migrate from other cypher using systems such as neo4j
+  Use this skill when writing code to talk to LadybugDB
 ---
 
-# Migrate from Kuzu to LadybugDB
+# LadybugDB Shell (LadybugQL)
 
-LadybugDB is the continuation of Kuzu. The migration involves updating package imports and connection code.
+LadybugDB is a high-performance embedded graph database with a Cypher-compatible query language called LadybugQL. This doc covers the interactive **ladybug shell** (CLI).
 
-## Package Changes
+For language-specific interfaces, see:
+- [Python Interface](reference/python-interface.md)
+- [JavaScript Interface](reference/javascript-interface.md)
+- [Rust Interface](reference/rust-interface.md)
+- [Migrating from KuzuDB](reference/migration-from-kuzu.md)
 
-| Language | Old Package | New Package |
-|----------|-------------|-------------|
-| Python | `kuzu` | `ladybug` |
-| Node.js | `kuzu` | `@ladybugdb/core` |
-| Go | `github.com/kuzudb/go-kuzu` | `github.com/LadybugDB/go-ladybug` |
-| Rust | `kuzu` | `lbug` |
-
-## Python Migration
-
-### Installation
+## Quick Start
 
 ```bash
-# Old
-pip install kuzu
+# Start the interactive shell on an existing database
+ladybug my_database.lbg
 
-# New
-pip install ladybug
+# Start with an in-memory database (data lost on exit)
+ladybug :memory:
+
+# Start with a remote LadybugDB API server
+ladybug http://localhost:8123
 ```
 
-### Code Changes
+## Shell Meta-Commands
 
-```python
-# Old (kuzu)
-import kuzu
+These commands run inside the shell to inspect the database schema and metadata:
 
-db = kuzu.Database("myDB")
-conn = kuzu.Connection(db)
-result = conn.execute("MATCH (n) RETURN n LIMIT 5")
-```
+### `show_tables()`
 
-```python
-# New (ladybug)
-import ladybug as lb
-
-db = lb.Database("myDB")
-conn = lb.Connection(db)
-result = conn.execute("MATCH (n) RETURN n LIMIT 5")
-```
-
-## Database Compatibility
-
-LadybugDB is built on top of Kuzu, so existing `.kuzu` database files are generally compatible. If needed, use the EXPORT/IMPORT commands:
+List all tables (node tables, relationship tables, and foreign tables) in the current database:
 
 ```cypher
--- Export from Kuzu
-EXPORT DATABASE '/path/to/export';
-
--- Import to Ladybug
-IMPORT DATABASE '/path/to/export';
+show_tables();
 ```
 
-## Connection String Changes
+Output:
 
-```python
-# Embedded (unchanged)
-db = lb.Database("myDB")
+| name      | type   |
+|-----------|--------|
+| Person    | NODE   |
+| City      | NODE   |
+| Follows   | REL    |
+| LivesIn   | REL    |
+| ts.person | NODE   |← foreign (DuckDB)
 
-# In-memory (unchanged)
-db = lb.Database(":memory:")
+### `show_indexes()`
 
-# Remote API server
-db = lb.Database("http://localhost:8123")
+List all indexes defined on node table properties:
+
+```cypher
+show_indexes();
 ```
 
-## Notes
+Output:
 
-- KuzuDB is now archived; LadybugDB continues development
-- Some extension names may differ between versions
-- Check LadybugDB documentation for new features like object storage support
+| table_name | index_name   | property | index_type |
+|------------|-------------|----------|------------|
+| Person     | pk_Person   | id       | PRIMARY KEY |
+| City       | pk_City     | id       | PRIMARY KEY |
 
-## Reference
+### `table_info('table_name')`
 
-- [Cypher Queries](reference/cypher.md)
-- [DDL](reference/ddl.md)
-- [Data Import/Export](reference/foreign.md)
-- [Data Science](reference/data-science.md)
+Show schema details for a specific table, including column names, types, and primary key:
+
+```cypher
+table_info('Person');
+```
+
+Output:
+
+| property_name | type   | primary_key |
+|---------------|--------|-------------|
+| id            | INT64  | true        |
+| name          | STRING | false       |
+| age           | INT64  | false       |
+
+### `show_functions()`
+
+List all built-in and user-defined functions available in the query engine:
+
+```cypher
+show_functions();
+```
+
+Output:
+
+| name       | type     |
+|------------|----------|
+| COUNT      | AGGREGATE |
+| SUM        | AGGREGATE |
+| AVG        | AGGREGATE |
+| MIN        | AGGREGATE |
+| MAX        | AGGREGATE |
+| length     | SCALAR   |
+| concat     | SCALAR   |
+| timestamp  | SCALAR   |
+| node_uri   | SCALAR   |
+| ...        | ...      |
+
+### `show_macros()`
+
+List all user-defined macros (parametrized expressions defined with `CREATE MACRO`):
+
+```cypher
+show_macros();
+```
+
+Output:
+
+| name   | parameters | expression |
+|--------|-----------|------------|
+| add    | (x, y)    | x + y      |
+| is_adult| (age)    | age >= 18  |
+
+## Running Queries
+
+Enter any LadybugQL statement directly:
+
+```cypher
+CREATE NODE TABLE Person (id INT64, name STRING, age INT64, PRIMARY KEY (id));
+CREATE (p:Person {id: 1, name: 'Alice', age: 30});
+MATCH (p:Person) RETURN p.name, p.age;
+```
+
+## Shell Options
+
+| Flag | Description |
+|------|-------------|
+| `:memory:` | Run against an in-memory database |
+| `<path>` | Open or create a persistent database at the given path |
+| `http://host:port` | Connect to a remote LadybugDB API server |
+
+---
+
+## Attaching Foreign Tables
+
+LadybugDB can attach external databases as foreign tables and query them with standard LadybugQL.
+
+### DuckDB
+
+```cypher
+LOAD_DYNAMIC_EXTENSION duckdb;
+
+ATTACH '/path/to/database.db' AS ts
+    (dbtype duckdb, skip_unsupported_table = true);
+```
+
+Query using the alias prefix:
+
+```cypher
+MATCH (a:ts.person) WHERE a.age > 30 RETURN count(*);
+```
+
+Create relationship tables referencing DuckDB tables:
+
+```cypher
+CREATE REL TABLE knows_rel (FROM ts.person TO ts.person)
+    WITH (storage = 'ts.knows');
+
+MATCH (a:ts.person)-[b:knows_rel]->(c:ts.person) RETURN count(*);
+```
+
+### PostgreSQL
+
+```cypher
+LOAD_DYNAMIC_EXTENSION postgres;
+
+ATTACH '' AS pg
+    (dbtype postgres,
+     host 'localhost',
+     port 5432,
+     database 'mydb',
+     user 'user',
+     password 'pass');
+```
+
+### Detach
+
+```cypher
+DETACH ts;
+```
+
+---
+
+## Attaching LadybugDB Databases
+
+You can attach one LadybugDB database to another, allowing cross-database queries.
+
+Attach a LadybugDB database file:
+
+```cypher
+ATTACH '/path/to/other_database.lbg' AS other
+    (dbtype ladybug);
+```
+
+Query foreign node/rel tables using the alias:
+
+```cypher
+MATCH (n:other.Person) RETURN n.name;
+CREATE REL TABLE Links (FROM Person TO other.Product)
+    WITH (storage = 'other.knows');
+```
+
+Detach when finished:
+
+```cypher
+DETACH other;
+```
+
+---
+
+## Further Reading
+
+- [Cypher Query Reference](reference/cypher.md) — LadybugQL extensions for JSON, open-type graphs, Parquet on disk, Arrow memory
+- [DDL Reference](reference/ddl.md) — Icebug/Iceberg format Parquet, table creation with storage options
+- [Foreign Data Wrappers](reference/foreign.md) — DuckDB and other foreign database attachment details
+- [Data Science](reference/data-science.md) — Icebug (networkit fork), Arrow-native graph algorithms
+- [Language SDKs](reference/python-interface.md) — Python, JavaScript, Rust API docs
