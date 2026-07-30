@@ -165,19 +165,19 @@ MATCH (a:ts.person)-[b:knows_rel]->(c:ts.person) RETURN count(*);
 
 ### PostgreSQL (v0.19.0+)
 
-Use the native `pg_client` extension (preferred over the DuckDB-based postgres extension):
+Use the native `pg_client` extension (preferred over the DuckDB-based postgres extension). Both libpq connection strings and URLs are accepted:
 
 ```cypher
 install pg_client;
 load pg_client;
 
-ATTACH '' AS pg
-    (dbtype postgres,
-     host 'localhost',
-     port 5432,
-     database 'mydb',
-     user 'user',
-     password 'pass');
+-- Libpq connection string
+ATTACH 'host=localhost port=5432 dbname=mydb user=user password=pass' AS pg
+    (dbtype postgres);
+
+-- URL format (also accepted)
+ATTACH 'postgresql://user:pass@localhost:5432/mydb' AS pg
+    (dbtype postgres);
 ```
 
 ### Detach
