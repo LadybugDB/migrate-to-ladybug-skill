@@ -18,13 +18,13 @@ For language-specific interfaces, see:
 
 ```bash
 # Start the interactive shell on an existing database
-ladybug my_database.lbg
+lbug my_database.lbdb
 
 # Start with an in-memory database (data lost on exit)
-ladybug :memory:
+lbug :memory:
 
 # Start with a remote LadybugDB API server
-ladybug http://localhost:8123
+lbug http://localhost:8123
 ```
 
 ## Shell Meta-Commands
@@ -195,7 +195,7 @@ You can attach one LadybugDB database to another, allowing cross-database querie
 Attach a LadybugDB database file:
 
 ```cypher
-ATTACH '/path/to/other_database.lbg' AS other
+ATTACH '/path/to/other_database.lbdb' AS other
     (dbtype ladybug);
 ```
 
