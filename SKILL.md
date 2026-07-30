@@ -221,4 +221,7 @@ DETACH other;
 - [DDL Reference](reference/ddl.md) — Icebug/Iceberg format Parquet, table creation with storage options
 - [Foreign Data Wrappers](reference/foreign.md) — DuckDB and other foreign database attachment details
 - [Data Science](reference/data-science.md) — Icebug (networkit fork), Arrow-native graph algorithms
-- [Language SDKs](reference/python-interface.md) — Python, JavaScript, Rust API docs
+- [Python Interface](reference/python-interface.md) — LadybugDB Python SDK
+- [JavaScript Interface](reference/javascript-interface.md) — LadybugDB Node.js SDK
+- [Rust Interface](reference/rust-interface.md) — LadybugDB Rust SDK (`lbug` crate)
+- [Migrating from KuzuDB](reference/migration-from-kuzu.md) — Package and code migration guide
