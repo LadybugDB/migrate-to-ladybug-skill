@@ -33,7 +33,8 @@ These commands run inside the shell to inspect the database schema and metadata:
 List all tables (node tables, relationship tables, and foreign tables) in the current database:
 
 ```cypher
-show_tables();
+CALL show_tables() RETURN *; // correct syntax
+show_tables(); // Abbreviated version. CALL and RETURN * are implied, but syntactically incorrect
 ```
 
 Output:
